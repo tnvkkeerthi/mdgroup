@@ -11,7 +11,7 @@
 ## Installation
 Clone or Download this repo and navigate to the application directory
 ```bash
-git clone https://github.com/tnvkkeerthi/EMS.git
+git clone https://github.com/tnvkkeerthi/mdgroup.git
 cd EMS
 ```
 
@@ -27,7 +27,7 @@ npm start
 |__ controllers
 |__ models
 |__ routes
-|.. Dockerfile
+|__ tests
 |.. swaggerDoc.json
 |.. app.js
 |.. package.json
@@ -62,6 +62,6 @@ It also uses [mongoose](https://mongoosejs.com/) driver for mongodb, [signale-lo
 
 Assumptions 
 
-Here it is assumed that all expenses are in GBP(£)
-- We can have seperate test db - change the url acc to enviroinment
+- Here it is assumed that all expenses are in GBP(£)
+- We can have seperate test db and change the url acc to enviroinment
 - Disable/Enable logger for test enviroinment
