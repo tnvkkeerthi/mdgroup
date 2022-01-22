@@ -1,0 +1,276 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "version": "1.0.0",
+      "title": "Expenses application - Documentation",
+      "description": "An app to perform CRUD operations on expenses",
+      "contact": {
+        "name": "Keerthi",
+        "email": "tnvk.keerthi@gmail.com"
+      }
+    },
+    "servers": [
+      {
+        "url": "http://localhost:3000/expense-app",
+        "description": "Local Server"
+      }
+    ],
+    "tags": [
+      {
+        "name": "expenses", 
+        "name": "general"
+      }
+    ],
+    "paths" : {
+        "/health" : {
+            "get" : {
+                "tags": ["general"],
+                "summary" : "Healthcheck",
+                "description" : "Performs health check of expense-app",
+                 "responses": {
+                     "200": {
+                         "description" : "Application active",
+                         "content" : {
+                             "application/json" : {
+                                 "schema" : {
+                                    "$ref" : "#/components/schemas/health"
+                                 }
+                             }
+                         } 
+                     },
+                     "503" : {
+                        "description" : "Application inactive",
+                        "content" : {
+                            "application/json" : {
+                                "schema" : {
+                                   "type" : "string"
+                                }
+                            }
+                        } 
+                    }
+                 }
+            }
+        },
+        "/expenses" : {
+            "get" : {
+                "tags": ["expenses"],
+                "summary" : "Fetches list of expenses",
+                "description" : "Fetches the list of expenses with pagingation support. Expenses can be filtered with view count or isPublic",
+                "responses": {
+                    "200": {
+                        "description" : "Successfully fetched expenses",
+                        "content" : {
+                            "application/json" : {
+                                "schema" : {
+                                    "type" : "object",
+                                    "properties" : {
+                                        "expenses": { "type" : "array" , "items" : {"$ref" : "#/components/schemas/Expense"}}
+                                    }
+                                }
+                            }
+                        } 
+                    },
+                    "400" : {
+                       "description" : "Error in fetching expenses",
+                       "content" : {
+                           "application/json" : {
+                               "schema" : {
+                                "$ref" : "#/components/schemas/error"
+                               }
+                           }
+                       } 
+                   }
+                }
+            },
+            "post" : {
+                "tags": ["expenses"],
+                "summary" : "Saves a expense",
+                "description" : "Creates a expense",
+                "requestBody" : {
+                    "required" : "true",
+                    "content" : {
+                        "application/json" : {
+                            "schema" : {"$ref": "#/components/schemas/Expense"}
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description" : "Successfully created expense",
+                        "content" : {
+                            "application/json" : {
+                                "schema" : {
+                                    "type" : "object",
+                                    "properties" : {
+                                        "message":{ "type" : "string"},
+                                        "expense":{ "type" : "object" , "$ref" : "#/components/schemas/Expense"}
+                                    }
+                                }
+                            }
+                        } 
+                    },
+                    "400" : {
+                       "description" : "Error in creating expenses",
+                       "content" : {
+                           "application/json" : {
+                               "schema" : {
+                                "$ref" : "#/components/schemas/error"
+                               }
+                           }
+                       } 
+                   }
+                }
+            }
+        },
+        "/expenses/{id}" : {
+            "get" : {
+                "tags": ["expenses"],
+                "summary" : "Fetches a expense by ID",
+                "description" : "When passed an ID, it gets the relevant expense object",
+                "parameters" : [{
+                    "name" : "_id",
+                    "in" : "path",
+                    "description" : "expense ID",
+                    "required" : "true",
+                    "schema" : {
+                        "type": "string",
+                        "length": "24"
+                    }
+                 }],
+                 "responses": {
+                    "200": {
+                        "description" : "Successfully fetched an expense",
+                        "content" : {
+                            "application/json" : {
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/Expense"
+                                }
+                            }
+                        } 
+                    },
+                    "400" : {
+                       "description" : "Error in retriving expense",
+                       "content" : {
+                           "application/json" : {
+                               "schema" : {
+                                "$ref" : "#/components/schemas/error"
+                               }
+                           }
+                       } 
+                   }
+                }
+            },
+            "put" : {
+                "tags": ["expenses"],
+                "summary" : "Edits a expense by ID",
+                "description" : "When passed an ID, it updates the corresponding expense object",
+                "parameters" : [{
+                    "name" : "_id",
+                    "in" : "path",
+                    "description" : "expense ID",
+                    "required" : "true",
+                    "schema" : {
+                        "type": "string",
+                        "length": "24"
+                    }
+                 }],
+                 "responses": {
+                    "200": {
+                        "description" : "Successfully edited the expense",
+                        "content" : {
+                            "application/json" : {
+                                "schema" : {
+                                    "type" : "object",
+                                    "properties" : {
+                                        "message":{ "type" : "string"},
+                                        "expense":{ "type" : "object" , "$ref" : "#/components/schemas/Expense"}
+                                    }
+                                }
+                            }
+                        } 
+                    },
+                    "400" : {
+                       "description" : "Error in editing expense",
+                       "content" : {
+                           "application/json" : {
+                               "schema" : {
+                                "$ref" : "#/components/schemas/error"
+                               }
+                           }
+                       } 
+                   }
+                }
+            },
+            "delete" : {
+                "tags": ["expenses"],
+                "summary" : "Deletes a expense by ID",
+                "description" : "When passed an ID, it deletes the relevant expense object",
+                "parameters" : [{
+                    "name" : "_id",
+                    "in" : "path",
+                    "description" : "expense ID",
+                    "required" : "true",
+                    "schema" : {
+                        "type": "string",
+                        "length": "24"
+                    }
+                 }],
+                 "responses": {
+                    "200": {
+                        "description" : "Successfully deleted the expense",
+                        "content" : {
+                            "application/json" : {
+                                "schema" : {
+                                    "$ref" : "#/components/schemas/message"
+                                }
+                            }
+                        } 
+                    },
+                    "400" : {
+                       "description" : "Error in deletion",
+                       "content" : {
+                           "application/json" : {
+                               "schema" : {
+                                "$ref" : "#/components/schemas/error"
+                               }
+                           }
+                       } 
+                   }
+                }
+            }
+        }
+    },
+    "components" : {
+        "schemas" : {
+            "Expense" : {
+                "type" : "object",
+                "properties" : {
+                    "description" : { "type" : "string"},
+                    "value" : { "type" :"number" , "format" : "float"},
+                    "type" : { "type" :"string" , "enum" : ["Entertainment","Food","Bills","Transport","Other"]}
+                }
+            },
+            "health" : {
+                "type" : "object",
+                "properties" : {
+                    "uptime" : { "type" : "number" , "format" : "float"},
+                    "message" : { "type" :"string"},
+                    "date" : { "type" :"string", "format": "date-time"}
+                }
+            },
+            "error" : {
+                "type" : "object",
+                "properties" : {
+                    "error" : { "type" : "string"}
+                }
+            },
+            "message" : {
+                "type" : "object",
+                "properties" : {
+                    "message" : { "type" : "string"}
+                }
+            }
+        }
+    }
+
+  }
